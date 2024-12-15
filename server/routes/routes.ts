@@ -1,5 +1,8 @@
-import express from "express"
-import userControllers from "../controllers/users"
+import express, { Request, Response } from "express"
+import userControllers from "../controllers/users/index"
+import { authMiddleware } from "../middlewares/authMiddleware"
 const Router = express.Router()
-Router.get("/users", userControllers.getUsers)
+Router.post("/register", userControllers.register)
+Router.post("/login", userControllers.login)
+
 export default Router

@@ -13,7 +13,13 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { z } from "zod"
 import { loginSchema } from "@/features/auth/login/schema"
+import { useLogin } from "@/features/auth/api/use-login"
+import { useSelector, useDispatch } from "react-redux"
+import { RootState } from "@/store/store"
+import { loginAction } from "@/store/slices/authSlice"
 const LoginPage = () => {
+  const { mutate } = useLogin()
+  const dispatch = useDispatch()
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -21,8 +27,15 @@ const LoginPage = () => {
       password: "",
     },
   })
+  const user = useSelector((state: RootState) => state.user)
+  console.log(user)
   function onSubmit(values: z.infer<typeof loginSchema>) {
-    console.log(values)
+    mutate(values)
+    const data = {
+      email: values.email,
+      id: values.id,
+    }
+    dispatch(loginAction({ email: values.email, id: data.id ?? 0 }))
   }
   return (
     <Card className="w-full h-full md:w-[487px] ">

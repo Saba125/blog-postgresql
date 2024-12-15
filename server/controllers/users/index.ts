@@ -1,5 +1,6 @@
-import { getUsers } from "./testController"
+import { login, register } from "./userController"
 const userControllers = {
-  getUsers,
+  register,
+    login,
 }
 export default userControllers
