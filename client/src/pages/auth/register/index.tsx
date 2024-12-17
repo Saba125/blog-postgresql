@@ -15,7 +15,7 @@ import { registerSchema } from "@/features/auth/register/schema"
 import { z } from "zod"
 import { useRegister } from "@/features/auth/api/use-register"
 const RegisterPage = () => {
-  const { mutate } = useRegister()
+  const { mutate, isPending } = useRegister()
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -26,7 +26,6 @@ const RegisterPage = () => {
   })
   function onSubmit(values: z.infer<typeof registerSchema>) {
     mutate(values)
-    
   }
   return (
     <Card className="w-full h-full md:w-[487px] ">
@@ -81,7 +80,11 @@ const RegisterPage = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="h-full w-full">
+            <Button
+              disabled={isPending}
+              type="submit"
+              className="h-full w-full"
+            >
               Submit
             </Button>
           </form>
